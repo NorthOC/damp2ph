@@ -207,7 +207,7 @@ def mdToWeb(mdFile):
                     temp = temp.replace(\
                         touple[0] + touple[1] + touple[2], f"<s>{touple[1]}</s>")
 
-            inline_code = re.findall("(`)([^`]{1}.*)(`)", temp)
+            inline_code = re.findall("(`)([^`]{1}.*?)(`)", temp)
 
             if len(inline_code) != 0:
                 for touple in inline_code:

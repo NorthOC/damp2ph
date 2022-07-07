@@ -16,9 +16,10 @@
         <h1>Denis's Automatic Markdown Parser To Pretty HTML</h1>
       </header>
       <article>
-        <h2>What it is and what it does</h2>
-        <p>Parses <code>pages.json` -> selects template files and content based on set params -> generates `.html</code> files -> formats them for human readability</p>
+        <h2>What it does? What it is? Why?</h2>
+        <p>Parses <code>pages.json</code> -> selects template files and content based on set params -> generates <code>.html</code> files -> formats them for human readability</p>
         <p>It is a markdown parser and html formatter written from scratch using a ton of RegEx.</p>
+        <p>As for the why - I'm making my own (webpage)[denislisunov.xyz] and I wanted to ease the pain of writing blog articles using pure html.</p>
         <h2>Install</h2>
         <code class="bash code-block">
           <pre>git clone https:<span class="comment">//github.com/NorthOC/damp2ph</span></pre>
@@ -26,7 +27,7 @@
           <pre>python generate.py</pre>
         </code>
         <h2>Examples</h2>
-        <p>In the <code>index.html` you will find this README generated as an example. Other examples are included in `pages/</code> directory</p>
+        <p>In the <code>index.html</code> you will find this README generated as an example. Other examples are included in <code>pages/</code> directory</p>
         <h2>Understanding what is where</h2>
         <p>HTML code consists of two sections: head and body. The templates for these are stored in <code>templates/</code>
         The compiler will fill out each variable you provide in the template (example of variable <code>{% author %}</code>)</p>
@@ -39,11 +40,11 @@
         </code>
         <p>all other keywords in the json file, for each page, depend on your template keywords. </p>
         <p>body and head templates are generated seperately</p>
-        <p>If your head template contains the keyword <code>{% description %}`, you need to provide the same parameter to your `pages.json` file in the form of `'description': 'my example of something here'</code></p>
+        <p>If your head template contains the keyword <code>{% description %}</code>, you need to provide the same parameter to your <code>pages.json</code> file in the form of <code>'description': 'my example of something here'</code></p>
         <p>Every param that is in the body (except for title) is set to compile markdown text to html.</p>
         <p>The <code>generator.py</code> contains the source code functions.</p>
         <p>The <code>generate.py</code> generates the pages using those functions.</p>
-        <p>I prefer to store my generated pages in <code>pages/` directory, but you can store it anywhere, based on the provided `output-filename.html` in your `pages.json</code> file.</p>
+        <p>I prefer to store my generated pages in <code>pages/</code> directory, but you can store it anywhere, based on the provided <code>output-filename.html</code> in your <code>pages.json</code> file.</p>
         <h2>Understanding output</h2>
         <p>CREATE pages/example1.html FROM [templates/head.html, templates/body.html] WITH content/text1.md ...done!
           CREATE pages/example2.html FROM [templates/head.html, templates/body.html] WITH content/text2.md ...done!
