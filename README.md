@@ -47,10 +47,3 @@ The `generator.py` contains the source code functions.
 The `generate.py` generates the pages using those functions.
 
 I prefer to store my generated pages in `pages/` directory, but you can store it anywhere, based on the provided `output-filename.html` in your `pages.json` file.
-
-## Understanding output
-
-CREATE pages/example1.html FROM [templates/head.html, templates/body.html] WITH content/text1.md ...done!
-CREATE pages/example2.html FROM [templates/head.html, templates/body.html] WITH content/text2.md ...done!
-CREATE pages/example3.html FROM [templates/head.html, templates/body.html] WITH content/text3.md ...done!
-CREATE pages/example4.html FROM [templates/head.html, templates/body.html] WITH content/text4.md ...done!
