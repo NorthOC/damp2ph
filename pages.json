@@ -1,0 +1,39 @@
+{
+    "index.html": {
+        "head": "templates/head.html", 
+        "body": "templates/body.html", 
+        "content": "README.md", 
+        "stylesheet": "static/style.css", 
+        "description": "tips and tricks", 
+        "keywords": "",
+        "author": "Your Friend"
+    },
+    "pages/example1.html": {
+        "head": "templates/head.html", 
+        "body": "templates/body.html", 
+        "content": "content/text1.md", 
+        "stylesheet": "static/style.css", 
+        "description": "page about text1", 
+        "keywords": "travelling, europe, asia, world, planning, hitchhike",
+        "author": "Me",
+        "title": "I choose to set title here"
+    },
+    "pages/example2.html": {
+        "head": "templates/head.html", 
+        "body": "templates/body.html", 
+        "content": "content/text2.md", 
+        "stylesheet": "static/style.css", 
+        "description": "page about text2", 
+        "keywords": "",
+        "author": "You"
+    },
+    "pages/example3.html": {
+        "head": "templates/head.html", 
+        "body": "templates/body.html", 
+        "content": "content/text3.md", 
+        "stylesheet": "static/style.css", 
+        "description": "whatever i did in the summer", 
+        "keywords": "recipe",
+        "author": "My Friend"
+    }
+}

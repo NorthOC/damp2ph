@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Denis's Automatic Markdown Parser To Pretty HTML | Your Friend</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style.css">
+    <meta name="description" content="tips and tricks">
+    <meta name="keywords" content="">
+    <meta name="author" content="Your Friend">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Denis's Automatic Markdown Parser To Pretty HTML</h1>
+      </header>
+      <article>
+        <h2>What it is and what it does</h2>
+        <p>Parses <code>pages.json` -> selects template files and content based on set params -> generates `.html</code> files -> formats them for human readability</p>
+        <p>It is a markdown parser and html formatter written from scratch using a ton of RegEx.</p>
+        <h2>Install</h2>
+        <code class="bash code-block">
+          <pre>git clone https:<span class="comment">//github.com/NorthOC/damp2ph</span></pre>
+          <pre>cd ./damp2ph</pre>
+          <pre>python generate.py</pre>
+        </code>
+        <h2>Examples</h2>
+        <p>In the <code>index.html` you will find this README generated as an example. Other examples are included in `pages/</code> directory</p>
+        <h2>Understanding what is where</h2>
+        <p>HTML code consists of two sections: head and body. The templates for these are stored in <code>templates/</code>
+        The compiler will fill out each variable you provide in the template (example of variable <code>{% author %}</code>)</p>
+        <p>To create a page, all you need to do is pass in the head and body templates to the <code>pages.json</code> file in such format:</p>
+        <code class="json code-block">
+          <pre>output-filename.html: {</pre>
+          <pre>    &#39;head&#39;: &#39;path to head template&#39;,</pre>
+          <pre>    &#39;body&#39;: &#39;path to body template&#39;,</pre>
+          <pre>}</pre>
+        </code>
+        <p>all other keywords in the json file, for each page, depend on your template keywords. </p>
+        <p>body and head templates are generated seperately</p>
+        <p>If your head template contains the keyword <code>{% description %}`, you need to provide the same parameter to your `pages.json` file in the form of `'description': 'my example of something here'</code></p>
+        <p>Every param that is in the body (except for title) is set to compile markdown text to html.</p>
+        <p>The <code>generator.py</code> contains the source code functions.</p>
+        <p>The <code>generate.py</code> generates the pages using those functions.</p>
+        <p>I prefer to store my generated pages in <code>pages/` directory, but you can store it anywhere, based on the provided `output-filename.html` in your `pages.json</code> file.</p>
+        <h2>Understanding output</h2>
+        <p>CREATE pages/example1.html FROM [templates/head.html, templates/body.html] WITH content/text1.md ...done!
+          CREATE pages/example2.html FROM [templates/head.html, templates/body.html] WITH content/text2.md ...done!
+          CREATE pages/example3.html FROM [templates/head.html, templates/body.html] WITH content/text3.md ...done!
+        CREATE pages/example4.html FROM [templates/head.html, templates/body.html] WITH content/text4.md ...done!</p>
+      </article>
+    </main>
+  </body>
+</html>
