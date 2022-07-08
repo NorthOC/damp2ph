@@ -13,7 +13,7 @@ As for the why - I'm making my own [webpage](denislisunov.xyz) and I wanted to e
 ``` bash
 git clone https://github.com/NorthOC/damp2ph
 cd ./damp2ph
-python generate.py
+python3 generate.py
 ```
 
 ## Examples
@@ -28,9 +28,12 @@ The compiler will fill out each variable you provide in the template (example of
 To create a page, all you need to do is pass in the head and body templates to the `pages.json` file in such format:
 
 ``` json
-output-filename.html: {
+{   
+    'output-filename.html': {
     'head': 'path to head template',
     'body': 'path to body template',
+    ...
+    }
 }
 ```
 
