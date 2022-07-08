@@ -1,10 +1,8 @@
 # Denis's Automatic Markdown Parser To Pretty HTML
 
-<div style="text-align:center">
-
-![damp2ph logo](/damp2ph.png)
-
-</div>
+<p align="center">
+  <img src="/damp2ph.png" />
+</p>
 
 ## What it does? What it is? Why?
 
@@ -19,7 +17,6 @@ As for the why - I'm making my own [webpage](https://www.denislisunov.xyz) and I
 ``` bash
 # Install
 git clone https://github.com/NorthOC/damp2ph
-
 # Run
 cd ./damp2ph
 python3 generate.py
