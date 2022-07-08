@@ -6,7 +6,7 @@ Parses `pages.json` -> selects template files and content based on set params ->
 
 It is a markdown parser and html formatter written from scratch using a ton of RegEx.
 
-As for the why - I'm making my own [webpage](denislisunov.xyz) and I wanted to ease the pain of writing blog articles using pure html.
+As for the why - I'm making my own [webpage](https://www.denislisunov.xyz) and I wanted to ease the pain of writing blog articles using pure html.
 
 ## Install
 
