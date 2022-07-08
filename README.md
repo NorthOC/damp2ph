@@ -1,10 +1,12 @@
 # Denis's Automatic Markdown Parser To Pretty HTML
 
+![damp2ph logo](/damp2ph.png)
+
 ## What it does? What it is? Why?
 
 Parses `pages.json` -> selects template files and content based on set params -> generates `.html` files -> formats them for human readability
 
-It is a markdown parser and html formatter written from scratch using a ton of RegEx.
+It is a markdown parser and html formatter and a static site generator (ALL IN ONE!) written from scratch using a ton of RegEx.
 
 As for the why - I'm making my own [webpage](https://www.denislisunov.xyz) and I wanted to ease the pain of writing blog articles using pure html.
 
