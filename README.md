@@ -1,6 +1,10 @@
 # Denis's Automatic Markdown Parser To Pretty HTML
 
+<div style="text-align:center">
+
 ![damp2ph logo](/damp2ph.png)
+
+</div>
 
 ## What it does? What it is? Why?
 
