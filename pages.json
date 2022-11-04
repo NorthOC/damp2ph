@@ -1,11 +1,9 @@
 {
     "index.html": {
-        "head": "templates/head.html", 
+        "head": "templates/head-auto-desc.html", 
         "body": "templates/body.html", 
         "content": "README.md", 
-        "stylesheet": "static/style.css", 
-        "description": "tips and tricks", 
-        "keywords": "",
+        "stylesheet": "static/style.css",
         "author": "Your Friend"
     },
     "pages/example1.html": {

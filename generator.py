@@ -1,5 +1,6 @@
 import json
 import re
+import unicodedata
 
 # parse json file
 def parsePages(jsonFile):
@@ -41,7 +42,7 @@ def mdToWeb(mdFile):
 
     for touple in images:
         md_tag = f"![{touple[0]}]({touple[1]})"
-        image_tag = f"<figure>\n<img src=\"{touple[1]}\" alt=\"{touple[0]}\"/>\n<figcaption>{touple[0].capitalize()}</figcaption>\n</figure>"
+        image_tag = f"<figure>\n<img src=\"{touple[1]}\" alt=\"{touple[0]}\"/>\n<figcaption>{touple[0]}</figcaption>\n</figure>"
         data = data.replace(md_tag, image_tag)
     
     # process links
@@ -55,7 +56,7 @@ def mdToWeb(mdFile):
     for line in data:
 
         # html code
-        if line.startswith("<"):
+        if line.startswith("<") and not line.startswith("<a "):
             pass
 
         # ordered lists
@@ -170,7 +171,13 @@ def mdToWeb(mdFile):
                         data[index] = ''
                         break
                     else:
-                        html_open_tag = "<" + h_tags[i][1] + ">"
+                        #create heading id for on-page link bookmarks
+                        id_heading = line[len(h_tags[i][0]):].lower()
+                        normalized = unicodedata.normalize('NFD', id_heading)
+                        decoded = u"".join([c for c in normalized if not unicodedata.combining(c)])
+                        h_id = re.sub(r"[^a-zA-Z0-9]+", ' ', decoded).strip().replace(" ", "_")
+
+                        html_open_tag = "<" + h_tags[i][1] + f" id=\"{h_id}\">"
                         html_close_tag = "</" + h_tags[i][1] + ">"
                         line = line.replace(h_tags[i][0], html_open_tag, 1) + html_close_tag
                         data[index] = line
@@ -220,61 +227,102 @@ def mdToWeb(mdFile):
     for item in data:
         if item != '<p></p>' and item != '':
             data_string += item + "\n"
+    #print(data_string)
     return data_string
         
 
 # static site generator
 def generateHTML(params):
+
+    # json file generated key value pairs
     for page in params:
 
+        # templates specified in json file
         head_template = params[page]["head"]
         body_template = params[page]["body"]
 
-        with open(page, 'w', encoding="utf-8") as result:
+        # these variables will hold the output of each filled out template
+        head_blob = ''
+        body_blob = ''
+        # generate meta desc for seo purposes if desc or description key is not specified in json file
+        if "desc" in params[page] or "description" in params[page]:
+            auto_description = False
+        else:
+            auto_description = True
 
-            # generate head section
-            print("CREATE {} FROM [{}, {}] WITH".format(page, head_template, body_template), end=' ')
+        # CLI indicator
+        print(f"CREATE {page} FROM [{head_template}, {body_template}] WITH", end=' ')
 
-            with open(head_template, 'r', encoding="utf-8") as head:
-                
-                head = head.read()
-                result.write("<!DOCTYPE html>\n")
-                result.write("<html lang=\"en\">")
+    # generate body section
+        with open(body_template, 'r', encoding="utf-8") as body:
 
-                to_fill_out = re.findall("({%)(.*?)(%})", head)
+            for line in body:
+                first = line.find("{%")
+                second = line.find("%}")
 
-                for touple in to_fill_out:
-                    key = touple[1].strip()
-                    if key == "stylesheet":
-                        head = head.replace(touple[0] + touple[1] + touple[2],f"/{params[page][key]}")
+                #check for variables in template
+
+                if first != -1 and second != -1:
+                    key = line[first + 2: second].replace(" ", '')
+                    #print(key)
+                    # if var is found, check if var should output a string(=) or generate html
+                    if key.startswith("="):
+                        line = line.replace(line[first: second + 2], f"{params[page][key[1:]]}")
                     else:
-                        head = head.replace(touple[0] + touple[1] + touple[2], params[page][key])
-                
-                for line in head.split("\n"):
-                    line = "\n    " + line
-                    result.write(line)
-                # end of head
-                result.write("\n")
-
-        # generate body section
-            with open(body_template, 'r', encoding="utf-8") as body:
-
-                for line in body:
-                    first = line.find("{%")
-                    second = line.find("%}")
-
-                    if first != -1 and second != -1:
-                        key = line[first + 2: second].replace(" ", '')
                         contents = params[page][key]
-                        if key == "title":
-                            line = line.replace(line[first: second + 2], f"<h1>{params[page][key]}</h1>")
-                        else:
-                            print(contents, end=' ')
-                            line = line.replace(line[first: second + 2], mdToWeb(contents))
-                    result.write(line)
-                result.write("\n</html>")
+                        print(contents, end=' ')
+                        generated_html = mdToWeb(contents)
+                        
+                        # generate auto description
+                        if auto_description:
+                            sanitized_desc = generateDesc(generated_html)
+
+                        #print(generated_html)
+                        line = line.replace(line[first: second + 2], generated_html)
+                
+                # final html_body generated
+                body_blob += line
+            #print(body_blob)
+
+
+
+        # generate head template
+        with open(head_template, 'r', encoding="utf-8") as head:
             
-            print("...done!")
+            head = head.read()
+
+            to_fill_out = re.findall("({%)(.*?)(%})", head)
+
+            # (%)(tag_name)(%)
+            for touple in to_fill_out:
+
+                # tag_name
+                key = touple[1].strip()
+                head = head.replace(touple[0] + touple[1] + touple[2], params[page][key])
+            
+            #print(head)
+
+            head_lines = head.split("\n")
+
+            # auto generate  meta description if desc or description key not specified in json (for seo)
+            if auto_description:
+                desc_tag = f"    <meta name=\"description\" content=\"{sanitized_desc}\">"
+                head_lines.insert(-1, desc_tag)
+
+            # final head
+            head_blob = "\n".join(head_lines)
+            #print(head_blob)
+
+
+        with open(page, 'w', encoding="utf-8") as result:
+            result.write(head_blob)
+            result.write("\n")
+            result.write(body_blob)
+        
+        if not auto_description:
+            print("(MANUAL DESCRIPTION!)", end=" ")
+        print("...done!")
+        
         lookGoodHTML(page)
 
 # prettifier
@@ -302,3 +350,19 @@ def lookGoodHTML(page, spaces = 2):
                     f.write(f"{indent * depth}{item}\n")
                 else:
                     f.write(f"{indent * depth}{item}\n")
+
+# generate meta description
+def generateDesc(body_blob):
+    inner_html = re.sub("<figcaption>[^<]*<\/figcaption>", "", body_blob)
+    inner_html = re.sub("<figcaption>[^<]*<\/figcaption>|<[^>]*>", "",inner_html)
+    inner_html = re.sub('\s+',' ',inner_html)
+    inner_html = re.sub("\"|\'", "", inner_html)
+    inner_html = (inner_html[:449] + '...') if len(inner_html) > 449 else inner_html
+
+    return inner_html.strip()
+
+
+if __name__ == "__main__":
+
+    params = parsePages("pages.json")
+    generateHTML(params)
