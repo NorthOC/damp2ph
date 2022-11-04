@@ -33,20 +33,22 @@ There are only three reserved keywords: title, head and body.
 
 You could even generate pages without markdown files.
 
+Template variables are stored in `pages.json` in the form of key:value pairs (variable_name: string). 
+
 ### Body
 
 The body template can have two different types of variables: string literal and html. 
 
-The string literal variables are denoted as `{%= variable %}`. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the `pages.json` file.
+In the body templates, the string literal variables are denoted as `{%= variable %}`. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the `pages.json` file.
 
-The html code variables are denoted as `{% variable %}`. The compiler will then generate html code and input that code into the template where the variable is written. For such a variable, the location of the markdown file needs to be provided in `pages.json`.
+The html variables in body templates are denoted as `{% variable %}`. The compiler will then generate html code and input that code into the template where the variable is written. For such a variable, the location of the markdown file needs to be provided in `pages.json`.
 
 ### Head
 
 The head template only supports string literal variables, however, they are denoted as `{% variable %}`. This design is subject to change.
 
-If your head template contains the keyword `{% description %}`, you need to provide the same value:key pair to your `pages.json` file. Example: `'description': 'my example of something here'`
+If your head template contains the keyword `{% description %}`, you need to provide the same key : value pair to your `pages.json` file. Example: `'description': 'my example of something here'`
 
 ### Automatic meta description
 
-he reason body templates are processed first, is to generate meta descriptions. In order to disable or override this feature, include a key:value pair in your `pages.json` either featuring the key `desc` or `description`. The compiler knows not to generate an automatic meta description for a url which includes one of these keys.
+The reason body templates are processed first, is to generate meta descriptions. In order to disable or override this feature, include a key:value pair in your `pages.json` either featuring the key `desc` or `description` with any value. The compiler knows not to generate an automatic meta description for a url which includes one of these keys.

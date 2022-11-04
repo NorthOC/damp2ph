@@ -20,29 +20,29 @@
       <code class="bash code-block">
         <pre><span class="comment"># Install</span></pre>
         <pre>git clone https:<span class="comment">//github.com/NorthOC/damp2ph</span></pre>
-      </code>
-      <h2 id="examples">Examples</h2>
-      <p>In the <code>index.html</code> you will find this README generated as an example. Other examples are included in <code>pages/</code> directory. Feel free to explore and ask any questions if needed.</p>
-      <h2 id="understanding_how_it_works">Understanding how it works</h2>
-      <p>The generator requires only three things: a head template, a body template and a markdown file with content.</p>
-      <p>In short, the markdown file is processed into a html body blob. After that, the head blob is generated based on the template. Then both blobs are written to a file and a beautifier is applied.</p>
-      <p>There are only three reserved keywords: title, head and body.</p>
-      <ul>
-        <li>title - the page title</li>
-        <li>head - the head template</li>
-        <li>body - the body template</li>
-      </ul>
-      <p>You could even generate pages without markdown files.</p>
-      <h3 id="body">Body</h3>
-      <p>The body template can have two different types of variables: string literal and html. </p>
-      <p>The string literal variables are denoted as <code>{%= variable %}</code>. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the <code>pages.json</code> file.</p>
-      <p>The html code variables are denoted as <code>{% variable %}</code>. The compiler will then generate html code and input that code into the template where the variable is written. For such a variable, the location of the markdown file needs to be provided in <code>pages.json</code>.</p>
-      <h3 id="head">Head</h3>
-      <p>The head template only supports string literal variables, however, they are denoted as <code>{% variable %}</code>. This design is subject to change.</p>
-      <p>If your head template contains the keyword <code>{% description %}</code>, you need to provide the same value:key pair to your <code>pages.json</code> file. Example: <code>'description': 'my example of something here'</code></p>
-      <h3 id="automatic_meta_description">Automatic meta description</h3>
-      <p>he reason body templates are processed first, is to generate meta descriptions. In order to disable or override this feature, include a key:value pair in your <code>pages.json</code> either featuring the key <code>desc</code> or <code>description</code>. The compiler knows not to generate an automatic meta description for a url which includes one of these keys.</p>
-    </article>
-  </main>
-  <script src="/scripts/addStyle.js"></script>
-</body>
+        <h2 id="examples">Examples</h2>
+        <p>In the <code>index.html</code> you will find this README generated as an example. Other examples are included in <code>pages/</code> directory. Feel free to explore and ask any questions if needed.</p>
+        <h2 id="understanding_how_it_works">Understanding how it works</h2>
+        <p>The generator requires only three things: a head template, a body template and a markdown file with content.</p>
+        <p>In short, the markdown file is processed into a html body blob. After that, the head blob is generated based on the template. Then both blobs are written to a file and a beautifier is applied.</p>
+        <p>There are only three reserved keywords: title, head and body.</p>
+        <ul>
+          <li>title - the page title</li>
+          <li>head - the head template</li>
+          <li>body - the body template</li>
+        </ul>
+        <p>You could even generate pages without markdown files.</p>
+        <p>Template variables are stored in <code>pages.json</code> in the form of key:value pairs (variable_name: string). </p>
+        <h3 id="body">Body</h3>
+        <p>The body template can have two different types of variables: string literal and html. </p>
+        <p>In the body templates, the string literal variables are denoted as <code>{%= variable %}</code>. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the <code>pages.json</code> file.</p>
+        <p>The html variables in body templates are denoted as <code>{% variable %}</code>. The compiler will then generate html code and input that code into the template where the variable is written. For such a variable, the location of the markdown file needs to be provided in <code>pages.json</code>.</p>
+        <h3 id="head">Head</h3>
+        <p>The head template only supports string literal variables, however, they are denoted as <code>{% variable %}</code>. This design is subject to change.</p>
+        <p>If your head template contains the keyword <code>{% description %}</code>, you need to provide the same key : value pair to your <code>pages.json</code> file. Example: <code>'description': 'my example of something here'</code></p>
+        <h3 id="automatic_meta_description">Automatic meta description</h3>
+        <p>The reason body templates are processed first, is to generate meta descriptions. In order to disable or override this feature, include a key:value pair in your <code>pages.json</code> either featuring the key <code>desc</code> or <code>description</code> with any value. The compiler knows not to generate an automatic meta description for a url which includes one of these keys.</p>
+      </article>
+    </main>
+    <script src="/scripts/addStyle.js"></script>
+  </body>
