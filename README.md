@@ -9,7 +9,6 @@ As for the why - I'm making my own [webpage](https://www.denislisunov.xyz) and I
 ``` bash
 # Install
 git clone https://github.com/NorthOC/damp2ph
-
 # run
 cd ./damp2ph
 python3 generator.py

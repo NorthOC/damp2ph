@@ -133,18 +133,16 @@ def mdToWeb(mdFile):
         elif line.startswith("```"):
 
             # escape html
-            comment = re.findall("(\/\/.*|#.*)", line)
             temp = line.replace("&", "&amp;").replace("<", "&lt;")\
                 .replace(">", "&gt;").replace("\"", "&quot;").replace("\'", "&#39;")
-            for touple in comment:
-                temp = temp.replace(touple, f"<span class=\"comment\">{touple}</span>")
             new_list = []
             new_string = ""
             temp = temp.split("\n")
-            started = False
+            start = True
             for code_line in temp:
-
-                if not started:
+                print(code_line)
+                # check if this is the first line of code block
+                if start:
                     # check if language is specified next to code block
                     code_class = code_line.split(" ")
 
@@ -152,9 +150,11 @@ def mdToWeb(mdFile):
                         new_list.append(f"<code class=\"{code_class[1]} code-block\">\n")
                     else:
                         new_list.append("<code class=\"code-block\">\n")
-                    started = True
+                    start = False
                 elif code_line == "```":
                     new_list.append("</code>")
+                elif code_line.startswith("#") or code_line.startswith("//"):
+                    new_list.append(f"<pre><span class=\"comment\">{code_line}</span></pre>\n")
                 else:
                     new_list.append(f"<pre>{code_line}</pre>\n")
 
