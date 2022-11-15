@@ -1,6 +1,7 @@
 import json
 import re
 import unicodedata
+from pathlib import Path
 
 # parse json file
 def parsePages(jsonFile):
@@ -313,7 +314,14 @@ def generateHTML(params):
             head_blob = "\n".join(head_lines)
             #print(head_blob)
 
+        # create subdirectories if specified
+        subdirectories = page.split("/")
+        directory = ""
+        for x in range(len(subdirectories) - 1):
+            directory += "/" + subdirectories[x]
+        Path("." + directory).mkdir(parents=True, exist_ok=True)
 
+        # write head and body blobs to file
         with open(page, 'w', encoding="utf-8") as result:
             result.write(head_blob)
             result.write("\n")
