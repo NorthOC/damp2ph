@@ -140,7 +140,7 @@ def mdToWeb(mdFile):
             temp = temp.split("\n")
             start = True
             for code_line in temp:
-                print(code_line)
+                #print(code_line)
                 # check if this is the first line of code block
                 if start:
                     # check if language is specified next to code block
@@ -321,11 +321,13 @@ def generateHTML(params):
             directory += "/" + subdirectories[x]
         Path("." + directory).mkdir(parents=True, exist_ok=True)
 
+        html_blob = head_blob + "\n" + body_blob
         # write head and body blobs to file
         with open(page, 'w', encoding="utf-8") as result:
-            result.write(head_blob)
-            result.write("\n")
-            result.write(body_blob)
+            result.write("<!DOCTYPE html>\n")
+            result.write("<html lang='en'>\n")
+            result.write(html_blob)
+            result.write("\n</html>")
         
         if not auto_description:
             print("(MANUAL DESCRIPTION!)", end=" ")
@@ -365,7 +367,7 @@ def generateDesc(body_blob):
     inner_html = re.sub("<figcaption>[^<]*<\/figcaption>|<[^>]*>", "",inner_html)
     inner_html = re.sub('\s+',' ',inner_html)
     inner_html = re.sub("\"|\'", "", inner_html)
-    inner_html = (inner_html[:449] + '...') if len(inner_html) > 449 else inner_html
+    inner_html = (inner_html[:155] + '...') if len(inner_html) > 155 else inner_html
 
     return inner_html.strip()
 
