@@ -1,24 +1,18 @@
 {
     "index.html": {
-        "head": "templates/head-auto-desc.html", 
-        "body": "templates/body.html", 
+        "head": "head-auto-desc.html", 
         "content": "README.md",
-        "desc": "No automatic description if I set it here"
+        "desc": ""
     },
-    "pages/example1.html": {
-        "head": "templates/head.html", 
-        "body": "templates/body.html", 
+    "pages/example1": {
         "content": "content/text1.md", 
         "title": "Not automatic title if I set it here"
     },
     "pages/example2.html": {
-        "head": "templates/head.html", 
-        "body": "templates/body.html", 
-        "content": "content/text2.md" 
+        "content": "content/text2.md" ,
+        "desc": "This is a description"
     },
     "pages/example3.html": {
-        "head": "templates/head.html", 
-        "body": "templates/body.html", 
         "content": "content/text3.md"
     }
 }

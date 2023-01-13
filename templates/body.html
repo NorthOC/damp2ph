@@ -1,11 +1,11 @@
 <body>
     <main>
         <header>
-            <h1>{%= title %}</h1>
+            <h1>{{= title }}</h1>
         </header>
         <button id="btn" onclick="addCss('btn')">Click for CSS</button>
         <article>
-            {% content %}
+            {{ content }}
         </article>
     </main>
     <script src="/scripts/addStyle.js"></script>
