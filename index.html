@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Denis's Automatic Markdown Parser To Pretty HTML</title>
+    <title>Denis's Automatic Markdown Parser To Pretty HTML (damp2ph)</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
@@ -9,21 +9,26 @@
   <body>
     <main>
       <header>
-        <h1>Denis's Automatic Markdown Parser To Pretty HTML</h1>
+        <h1>Denis's Automatic Markdown Parser To Pretty HTML (damp2ph)</h1>
       </header>
       <button id="btn" onclick="addCss('btn')">Click for CSS</button>
       <article>
-        <p>It is a Markdown to HTML parser, an HTML beautifier and a static site generator (ALL IN ONE!) written with built-in libraries and RegEx.</p>
-        <p>As for the why - I'm making my own <a href="https://www.denislisunov.xyz">webpage</a> and I wanted to ease the pain of writing blog articles using pure html.</p>
-        <h2 id="why_not_use_hugo">Why not use Hugo?</h2>
-        <p>Because It is always good important to understand what is under the hood.</p>
-        <h2 id="version_2">Version 2</h2>
+        <p>My biggest project so far.</p>
+        <p>It is a Markdown parser + Static site generator + HTML beautifier (ALL IN ONE!) written with built-in libraries and RegEx.</p>
+        <p>As for the why - I'm making my own <a target='_blank' href="https://www.denislisunov.xyz">webpage</a>.</p>
+        <h2 id="version_3_0">Version 3.0</h2>
+        <ul>
+          <li>Different page groups can now set different default templates in <code>config/defaults.json</code></li>
+          <li>Now includes automatic clean-up of previously generated pages from a generated <code>config/indexer.txt</code> file</li>
+          <li>Head template variables are now properly set with &#123;&#123;= variable &#125;&#125; instead of &#123;&#123; variable &#125;&#125;;</li>
+        </ul>
+        <h2 id="version_2_0">Version 2.0</h2>
         <ul>
           <li>Now includes partials (0.01 alpha version)</li>
           <li>Pages now use the <code>body.html</code> and <code>head.html</code> templates by default</li>
           <li>Base template makes for more readable template setups</li>
-          <li>Syntax changes from <code>{% key %}</code> to <code>{{ key }}</code></li>
-          <li>Automatic <code>index.html</code> generation for directories (see example1 in pages.json)</li>
+          <li>Syntax changes from <code>{% key %}</code> to <code>&#123;&#123; key &#125;&#125;</code></li>
+          <li>Automatic <code>index.html</code> generation for directories (see example1 in /config/pages.json)</li>
         </ul>
         <h2 id="install_generate">Install & Generate</h2>
         <code class="code-block bash">
@@ -34,17 +39,19 @@
         </code>
         <h2 id="file_structure">File structure</h2>
         <ul>
-          <li><code>pages.json</code> - This file contains metadata about each page that will be generated</li>
-          <li><code>generator.py</code> - This is where the magic happens</li>
-          <li><code>templates/</code> - Html templates. Important ones are <code>base.html</code>, <code>body.html</code> and <code>head.html</code></li>
-          <li><code>pages/</code> - This is the dir I chose for storing generated html examples (you can set your own)</li>
-          <li><code>content/</code> - This is the dir I chose for storing md content files (you can set your own)</li>
+          <li><code>generator.py</code> - This is the engine</li>
+          <li><code>config/defaults.json</code> - set default templates for each group of pages.</li>
+          <li><code>config/pages.json</code> - This is a page group file and contains metadata for each page.</li>
+          <li><code>templates/</code> - Html templates. Important ones are <code>base.html</code>, <code>body.html</code> and <code>head.html</code>. All other ones are optional.</li>
+          <li><code>templates/partials</code> - This is where the partials are stored.</li>
+          <li><code>pages/</code> - This is the dir I chose for storing generated html examples (you can set your own in a page group json file)</li>
+          <li><code>content/</code> - This is the dir I chose for storing md content files (you can set your own in a page group json file)</li>
         </ul>
         <h2 id="examples">Examples</h2>
-        <p>In the <code>index.html</code> you will find this README generated as an example. Other examples are included in <code>pages/</code> directory.</p>
+        <p>Examples are included in <code>pages/</code> directory.</p>
         <h2 id="understanding_how_it_works">Understanding how it works</h2>
         <p>Each page is stored in <code>pages.json</code> with data in the form of key:value pairs. </p>
-        <p>To generate a page you need only three key value pairs: a base template aka. <code>base.html</code>, the body template aka. <code>body.html</code> and the head template <code>head.html</code> which can be found in the <code>/templates/</code> directory. In version 2, these templates are now set by default, so specification of templates is only required when you want to use a non default one.</p>
+        <p>To generate a page you need only three key value pairs: a base template aka. <code>base.html</code>, the body template aka. <code>body.html</code> and the head template <code>head.html</code> which can be found in the <code>/templates/</code> directory. In version 3, these templates are not set by default. You need to set them in <code>config/defaults.json</code> for each page group.</p>
         <h2 id="predefined_key_value_pairs">Predefined key value pairs</h2>
         <p>Here is a list of predefined key value pairs for a page:</p>
         <ul>
@@ -53,20 +60,22 @@
           <li>body - the <code>body.html</code> template</li>
           <li>title - is generated from an md file from Heading 1</li>
           <li>description or desc - is generated from an md file</li>
+          <li>og-img - is generated from the first image encountered on a page or is set to none.</li>
         </ul>
-        <p>These keys can also be set to your liking by stating them in <code>pages.json</code></p>
-        <h2 id="body">Body</h2>
-        <p>The body can use only one markdown file for content. There is no specified keyword for placing content in the body, thus you have to explicitly set the key value pair for content in the <code>pages.json</code> file and set the keyword in the body template as {{ keyword }}. It is best practices to just use 'content' as a keyword.</p>
-        <p>There are also string literal variables are denoted as {{= variable }}. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the <code>pages.json</code> file. For example {{= title }} variable in the body will generate a title.</p>
-        <h2 id="head">Head</h2>
-        <p>The head template only supports string literal variables, they are denoted as {{ variable }}.</p>
-        <h2 id="automatic_meta_description_and_title">Automatic meta description and title</h2>
-        <p>Each page generates an automatic description will automatically set the meta tag for description. To override this behavior for a specific page, set the "description" or "desc" key to anything (an empty string will do too!)</p>
+        <p>To overwrite these parameters for a page, you have to set them explicitly for each page.</p>
+        <h2 id="body_variables">Body variables</h2>
+        <p>The body can use only one markdown file for content. There is no specified keyword for placing content in the body, thus you have to explicitly set the key value pair for content in the <code>pages.json</code> file and set the keyword in the body template as &#123;&#123; keyword &#125;&#125;. It is best practices to just use 'content' as a keyword.</p>
+        <p>There are also string literal variables which are denoted as &#123;&#123;= variable &#125;&#125;. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the specified page group file. For example &#123;&#123;= title &#125;&#125; variable in the body will generate a title.</p>
+        <h2 id="head_variables">Head variables</h2>
+        <p>The head template only supports string literal variables. As of version 3.0, they are denoted as &#123;&#123;= variable &#125;&#125;.</p>
+        <h2 id="automatic_meta_description_title_and_og_image">Automatic meta description, title and og image</h2>
+        <p>Each page generates an automatic description and will automatically set the meta tag for description. To override this behavior for a specific page, set the "description" or "desc" key to anything (an empty string will do too!)</p>
         <p>The title is generated as well, however, you have to place the title yourself. In case the Heading 1 cannot be found in the markdown file, the title will be set as "Untitled Document". To set your own title or to override this behavior for a page, set the "title" key to anything.</p>
+        <p>An og image is generated from the first encountered image in a content document. To override this behavior set the "og-img" variable to anything.</p>
         <h2 id="partials_experimental">Partials! (experimental)</h2>
         <p>Yep, you can now set partials in markdown files! Each partial takes 3 arguments (partial_file_name, no_of_times, data_file). An example of a partial:</p>
         <p>&#123;&#123; <code>md_dir</code> <code>all</code> <code>pages.json</code> &#125;&#125;</p>
-        <p>This would take the <code>templates/partials/md_dir.html</code> file and generate all md file locations for each page in <code>pages.json</code></p>
+        <p>This would take the <code>templates/partials/md_dir.html</code> file and generate all content file paths with which each page is generated with in <code>pages.json</code></p>
         <p>&#123;&#123; <code>md_dir</code> <code>1</code> <code>pages.json</code> &#125;&#125;</p>
         <p>This would only generate one location for one page</p>
         <p>Partials are not user friendly yet and are subject to change</p>

@@ -1,12 +1,12 @@
 {
     "index.html": {
-        "head": "head-auto-desc.html", 
-        "content": "README.md",
+        "head": "templates/head-auto-desc.html",
+        "content": "README.md", 
         "desc": ""
     },
     "pages/example1": {
         "content": "content/text1.md", 
-        "title": "Not automatic title if I set it here"
+        "title": "Not automatic title if I set it in config/pages.json"
     },
     "pages/example2.html": {
         "content": "content/text2.md" ,

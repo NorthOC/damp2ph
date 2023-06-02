@@ -1,0 +1,7 @@
+{
+    "config/pages.json": {
+        "head": "templates/head.html",
+        "body": "templates/body.html",
+        "base": "templates/base.html"
+    }
+}

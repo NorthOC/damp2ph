@@ -1,20 +1,24 @@
-# Denis's Automatic Markdown Parser To Pretty HTML
+# Denis's Automatic Markdown Parser To Pretty HTML (damp2ph)
 
-It is a Markdown to HTML parser, an HTML beautifier and a static site generator (ALL IN ONE!) written with built-in libraries and RegEx.
+My biggest project so far.
 
-As for the why - I'm making my own [webpage](https://www.denislisunov.xyz) and I wanted to ease the pain of writing blog articles using pure html.
+It is a Markdown parser + Static site generator + HTML beautifier (ALL IN ONE!) written with built-in libraries and RegEx.
 
-## Why not use Hugo?
+As for the why - I'm making my own [webpage](https://www.denislisunov.xyz).
 
-Because It is always good important to understand what is under the hood.
+## Version 3.0
 
-## Version 2
+* Different page groups can now set different default templates in `config/defaults.json`
+* Now includes automatic clean-up of previously generated pages from a generated `config/indexer.txt` file
+* Head template variables are now properly set with &#123;&#123;= variable &#125;&#125; instead of &#123;&#123; variable &#125;&#125;;
+
+## Version 2.0
 
 * Now includes partials (0.01 alpha version)
 * Pages now use the `body.html` and `head.html` templates by default
 * Base template makes for more readable template setups
-* Syntax changes from `{% key %}` to `{{ key }}`
-* Automatic `index.html` generation for directories (see example1 in pages.json)
+* Syntax changes from `{% key %}` to `&#123;&#123; key &#125;&#125;`
+* Automatic `index.html` generation for directories (see example1 in /config/pages.json)
 
 ## Install & Generate
 
@@ -27,21 +31,23 @@ python3 generator.py
 
 ## File structure
 
-* `pages.json` - This file contains metadata about each page that will be generated
-* `generator.py` - This is where the magic happens
-* `templates/` - Html templates. Important ones are `base.html`, `body.html` and `head.html`
-* `pages/` - This is the dir I chose for storing generated html examples (you can set your own)
-* `content/` - This is the dir I chose for storing md content files (you can set your own)
+* `generator.py` - This is the engine
+* `config/defaults.json` - set default templates for each group of pages.
+* `config/pages.json` - This is a page group file and contains metadata for each page.
+* `templates/` - Html templates. Important ones are `base.html`, `body.html` and `head.html`. All other ones are optional.
+* `templates/partials` - This is where the partials are stored.
+* `pages/` - This is the dir I chose for storing generated html examples (you can set your own in a page group json file)
+* `content/` - This is the dir I chose for storing md content files (you can set your own in a page group json file)
 
 ## Examples
 
-In the `index.html` you will find this README generated as an example. Other examples are included in `pages/` directory.
+Examples are included in `pages/` directory.
 
 ## Understanding how it works
 
 Each page is stored in `pages.json` with data in the form of key:value pairs. 
 
-To generate a page you need only three key value pairs: a base template aka. `base.html`, the body template aka. `body.html` and the head template `head.html` which can be found in the `/templates/` directory. In version 2, these templates are now set by default, so specification of templates is only required when you want to use a non default one.
+To generate a page you need only three key value pairs: a base template aka. `base.html`, the body template aka. `body.html` and the head template `head.html` which can be found in the `/templates/` directory. In version 3, these templates are not set by default. You need to set them in `config/defaults.json` for each page group.
 
 ## Predefined key value pairs
 
@@ -52,24 +58,27 @@ Here is a list of predefined key value pairs for a page:
 * body - the `body.html` template
 * title - is generated from an md file from Heading 1
 * description or desc - is generated from an md file
+* og-img - is generated from the first image encountered on a page or is set to none.
 
-These keys can also be set to your liking by stating them in `pages.json`
+To overwrite these parameters for a page, you have to set them explicitly for each page.
 
-## Body
+## Body variables
 
-The body can use only one markdown file for content. There is no specified keyword for placing content in the body, thus you have to explicitly set the key value pair for content in the `pages.json` file and set the keyword in the body template as {{ keyword }}. It is best practices to just use 'content' as a keyword.
+The body can use only one markdown file for content. There is no specified keyword for placing content in the body, thus you have to explicitly set the key value pair for content in the `pages.json` file and set the keyword in the body template as &#123;&#123; keyword &#125;&#125;. It is best practices to just use 'content' as a keyword.
 
-There are also string literal variables are denoted as {{= variable }}. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the `pages.json` file. For example {{= title }} variable in the body will generate a title.
+There are also string literal variables which are denoted as &#123;&#123;= variable &#125;&#125;. The equals sign signifies to the compiler that this variable will be replaced with a value of a string found in the specified page group file. For example &#123;&#123;= title &#125;&#125; variable in the body will generate a title.
 
-## Head
+## Head variables
 
-The head template only supports string literal variables, they are denoted as {{ variable }}.
+The head template only supports string literal variables. As of version 3.0, they are denoted as &#123;&#123;= variable &#125;&#125;.
 
-## Automatic meta description and title
+## Automatic meta description, title and og image
 
-Each page generates an automatic description will automatically set the meta tag for description. To override this behavior for a specific page, set the "description" or "desc" key to anything (an empty string will do too!)
+Each page generates an automatic description and will automatically set the meta tag for description. To override this behavior for a specific page, set the "description" or "desc" key to anything (an empty string will do too!)
 
 The title is generated as well, however, you have to place the title yourself. In case the Heading 1 cannot be found in the markdown file, the title will be set as "Untitled Document". To set your own title or to override this behavior for a page, set the "title" key to anything.
+
+An og image is generated from the first encountered image in a content document. To override this behavior set the "og-img" variable to anything.
 
 ## Partials! (experimental)
 
@@ -77,7 +86,7 @@ Yep, you can now set partials in markdown files! Each partial takes 3 arguments 
 
 &#123;&#123; `md_dir` `all` `pages.json` &#125;&#125;
 
-This would take the `templates/partials/md_dir.html` file and generate all md file locations for each page in `pages.json`
+This would take the `templates/partials/md_dir.html` file and generate all content file paths with which each page is generated with in `pages.json`
 
 &#123;&#123; `md_dir` `1` `pages.json` &#125;&#125;
 
